@@ -16,11 +16,11 @@ Ported by Century
 This a open-source project. for more information see LICENSE.TXT
 */
 
-#include maps\mp\gametypes\_hud_util;
 #include maps\mp\_utility;
 #include common_scripts\utility;
-#include maps\mp\gametypes\_globallogic_score;
+#include maps\mp\gametypes\_hud_util;
 #include maps\mp\gametypes\Props\assets;
+#include maps\mp\gametypes\_globallogic_score;
 
 buildMode() {
 	self notify("me_buildmode");

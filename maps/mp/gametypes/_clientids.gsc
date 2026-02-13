@@ -1,6 +1,6 @@
-#include maps\mp\gametypes\_hud_util;
 #include maps\mp\_utility;
 #include common_scripts\utility;
+#include maps\mp\gametypes\_hud_util;
 
 /*
 TODO:
@@ -56,9 +56,9 @@ onPlayerSpawned() {
 					//if player joins the game and prophunt already started, he becomes a spectator until the next game
 					if (level.propHuntStarted) {
 						if (isAlive(self)) {
-							self suicide();
 							self.propTeam = "spectator";
 							self changeMyTeam("spectator");
+							self suicide();
 						}
 					}
 				}
