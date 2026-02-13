@@ -47,8 +47,8 @@ onStartGameType()
 		maps\mp\gametypes\_globallogic_ui::setObjectiveScoreText( "allies", &"OBJECTIVES_TDM_SCORE" );
 		maps\mp\gametypes\_globallogic_ui::setObjectiveScoreText( "axis", &"OBJECTIVES_TDM_SCORE" );
 	}
-	maps\mp\gametypes\_globallogic_ui::setObjectiveHintText("allies", "Find a good place to hide!");
-	maps\mp\gametypes\_globallogic_ui::setObjectiveHintText("axis", "Search and kill all props!");
+	maps\mp\gametypes\_globallogic_ui::setObjectiveHintText("allies", "Find a good hiding spot!");
+	maps\mp\gametypes\_globallogic_ui::setObjectiveHintText("axis", "Search and eliminate all Props!");
 	
 	level.spawnMins = ( 0, 0, 0 );
 	level.spawnMaxs = ( 0, 0, 0 );

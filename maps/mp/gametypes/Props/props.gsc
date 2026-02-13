@@ -108,7 +108,7 @@ onPrecacheGameModels()
     }
 	else
     {
-		self iPrintln("[me] loading models failed, no models assigned");
+		self iPrintln("Error: Failed to load models. No models have been assigned.");
     }
 }
 

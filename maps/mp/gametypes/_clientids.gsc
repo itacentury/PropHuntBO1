@@ -51,7 +51,7 @@ onPlayerSpawned()
 		{
 			if (level.currentGametype == "tdm")
 			{
-				self iPrintln("Welcome to Prop Hunt Black Ops Edition");
+				self iPrintln("Welcome to Prop Hunt: Black Ops Edition!");
 				self FreezeControls(false);
 
 				if (self isHost())
@@ -79,7 +79,7 @@ onPlayerSpawned()
 			}
 			else
 			{
-				self iPrintln("Only TDM is supported. Please restart and change the gametype.");
+				self iPrintln("Only TDM is supported. Please restart with the TDM gametype.");
 			}
 			
 			firstSpawn = false;
@@ -105,8 +105,8 @@ setupGameDvars()
 	setDvar("scr_numLives", 1);
 	setDvar("scr_player_numlives", 1);
 
-	setDvar("g_TeamName_Allies", "^2Props");
-    setDvar("g_TeamName_Axis", "^1Hunter");
+	setDvar("g_TeamName_Allies", "Prop");
+    setDvar("g_TeamName_Axis", "Hunter");
 	setDvar("ls_gametype", "PROP HUNT");
 	setDvar("ui_gametype", "PROP HUNT");
 	setDvar("ui_customModeEditName", "PROP HUNT");
@@ -126,7 +126,7 @@ monitorButtons()
 				{
 					self setupGameDvars();
 					self startPropHunt();
-					iPrintln("Prop Hunt ^2started!");
+					iPrintln("Prop Hunt has ^2started!");
 					level.propHuntStarted = true;
 
 					self.startPropHuntText destroy();
@@ -153,7 +153,7 @@ monitorButtons()
 startPropHuntText()
 {
 	self.startPropHuntText = createText("default", 1.5, "CENTER", "CENTER", 0, -50, 2, false, "");
-	self.startPropHuntText setText("Press [{+speed_throw}] & [{+actionslot 2}] to start the Prop Hunt!");
+	self.startPropHuntText setText("Press [{+speed_throw}] + [{+actionslot 2}] to start Prop Hunt!");
 	self.startPropHuntText setColor(1, 1, 1, 1);
 }
 
@@ -190,7 +190,7 @@ startPropHunt()
 
 hunterLogic()
 {
-	self iprintlnbold("You are the Hunter! Wait till the Props are hiden, then find and kill them!");
+	self iprintlnbold("You are a Hunter! Wait for the Props to hide, then find and eliminate them!");
 
 	self EnableInvulnerability();
 	self changeMyTeam("axis");
@@ -222,7 +222,7 @@ hunterLogic()
 	
 	for (i = 60; i > 0; i--)
 	{
-		self iprintln("Start hunting in: " + i);
+		self iprintln("Hunting begins in: " + i);
 		wait 1;
 	}
 
@@ -237,7 +237,7 @@ hunterLogic()
 
 propLogic()
 {
-	self iprintlnbold("You are a Prop! Change your model and hide somewhere!");
+	self iprintlnbold("You are a Prop! Choose your model and find a hiding spot!");
 
 	self changeMyTeam("allies");
 	self.pers["lives"] = 1;
@@ -263,15 +263,15 @@ propLogic()
 propControlsText()
 {
 	self.changeModelText = createText("default", 1, "LEFT", "CENTER", -425, -110, 2, false, "");
-	self.changeModelText setText("Press [{+actionslot 3}] or [{+actionslot 4}] to change your model!");
+	self.changeModelText setText("Press [{+actionslot 3}] or [{+actionslot 4}] to change your model.");
 	self.changeModelText setColor(1, 1, 1, 1);
 
 	self.rotateModelText = createText("default", 1, "LEFT", "CENTER", -425, -90, 2, false, "");
-	self.rotateModelText setText("Press [{+speed_throw}] or [{+attack}] to rotate your model!");
+	self.rotateModelText setText("Press [{+speed_throw}] or [{+attack}] to rotate your model.");
 	self.rotateModelText setColor(1, 1, 1, 1);
 
 	self.changeFOVText = createText("default", 1, "LEFT", "CENTER", -425, -70, 2, false, "");
-	self.changeFOVText setText("Press [{+actionslot 1}] or [{+actionslot 2}] to change your FOV!");
+	self.changeFOVText setText("Press [{+actionslot 1}] or [{+actionslot 2}] to adjust your FOV.");
 	self.changeFOVText setColor(1, 1, 1, 1);
 
 	self.currentModeltext = createText("default", 1, "LEFT", "CENTER", -425, -50, 2, false, "");
