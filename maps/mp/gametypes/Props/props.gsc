@@ -26,23 +26,23 @@ buildMode() {
 	self notify("me_buildmode");
     self notify("stop_ammo");
 
-    if (IsDefined(self.pers["myprop"])) {
-        self.pers["myprop"] Delete();
+    if (isDefined(self.pers["myprop"])) {
+        self.pers["myprop"] delete();
 	}
 
     //modes
 	if (self.pers["mode"] == "normal") {
-		usableModelsKeys = GetArrayKeys(level.usableModels);
+		usableModelsKeys = getArrayKeys(level.usableModels);
 		self.pers["myprop"] = spawn("script_model", self.origin);
 		self.pers["myprop"].health = 10000;
 		self.pers["myprop"].owner = self;
 		self.pers["myprop"].angles = self.angles;
-		self.pers["myprop"].indexKey = RandomInt(level.MAX_USUABLE_MODELS);
-		self.pers["myprop"] SetModel(level.usableModels[usableModelsKeys[self.pers["myprop"].indexKey]]);
+		self.pers["myprop"].indexKey = randomInt(level.MAX_USUABLE_MODELS);
+		self.pers["myprop"] setModel(level.usableModels[usableModelsKeys[self.pers["myprop"].indexKey]]);
         self.currentModeltext setText("Current model: " + level.usableModels[usableModelsKeys[self.pers["myprop"].indexKey]]);
 	}
 
-    self.pers["myprop"] SetCanDamage(true);
+    self.pers["myprop"] setCanDamage(true);
     self.pers["myprop"] thread detachOnDisconnect(self);
     self.pers["myprop"] thread attachModel(self);
     self thread monitorKeyPress();
@@ -56,7 +56,7 @@ attachModel(player) {
 
     for (;;) {
         if (self.origin != player.origin) {
-            self MoveTo(player.origin, 0.1);
+            self moveTo(player.origin, 0.1);
         }
 
         wait 0.01;
@@ -70,24 +70,24 @@ detachOnDisconnect(player) {
     player waittill("disconnect");
 	
     modelOrigin = self.origin;
-    self Delete();
+    self delete();
 }
 
 onPrecacheGameModels() {
     precacheLevelModels();
-    if (IsDefined(level.availableModels) && level.availableModels.size > 0 ) {
+    if (isDefined(level.availableModels) && level.availableModels.size > 0 ) {
         level.availableModels = array_randomize(level.availableModels);
         if (level.availableModels.size < level.MAX_USUABLE_MODELS) {
             level.MAX_USUABLE_MODELS = level.availableModels.size;
         }
 
-        availableModelsKeys = GetArrayKeys(level.availableModels);
-        if (!IsDefined(level.usableModels)) {
+        availableModelsKeys = getArrayKeys(level.availableModels);
+        if (!isDefined(level.usableModels)) {
             level.usableModels = [];
         }
 
         for (x = 0; x < level.availableModels.size; x++) {
-            PreCacheModel(level.availableModels[availableModelsKeys[x]]);
+            precacheModel(level.availableModels[availableModelsKeys[x]]);
             level.usableModels[level.availableModels[availableModelsKeys[x]]] = level.availableModels[availableModelsKeys[x]];
             if (level.usableModels.size >= level.MAX_USUABLE_MODELS) {
                 return;
@@ -95,17 +95,17 @@ onPrecacheGameModels() {
         }
     }
 	else {
-		self iPrintln("Error: Failed to load models. No models have been assigned.");
+		self iPrintLn("Error: Failed to load models. No models have been assigned.");
     }
 }
 
 precacheLevelModels() {
-    if (IsDefined(level.force_hns_models)) {
+    if (isDefined(level.force_hns_models)) {
         [[level.force_hns_models]]();
         return;
     }
 
-    switch (GetDvar(#"mapname")) {
+    switch (getDvar(#"mapname")) {
         case "mp_array":
             mpArrayPrecache();
             break;
@@ -184,18 +184,18 @@ monitorKeyPress() {
 	self endon("me_buildmode"); //kill when buildmode restarts
     level endon("game_ended");
 
-    usableModelsKeys = GetArrayKeys(level.usableModels);
+    usableModelsKeys = getArrayKeys(level.usableModels);
     minZoom = 125;
     maxZoom = 525;
     zoomChangeRate = 5;
     self Hide();
-    self.pers["myprop"].rotateYaw_attack = SpawnStruct();
+    self.pers["myprop"].rotateYaw_attack = spawnStruct();
     self.pers["myprop"].rotateYaw_attack.value = 0;
     self.pers["myprop"].rotateYaw_attack.check = ::attackCheck;
     self.pers["myprop"].rotateYaw_attack.max = -50;
     self.pers["myprop"].rotateYaw_attack.change_rate = 1;
     self.pers["myprop"].rotateYaw_attack.reset_rate = 50;
-    self.pers["myprop"].rotateYaw_ads = SpawnStruct();
+    self.pers["myprop"].rotateYaw_ads = spawnStruct();
     self.pers["myprop"].rotateYaw_ads.value = 0;
     self.pers["myprop"].rotateYaw_ads.check = ::adsCheck;
     self.pers["myprop"].rotateYaw_ads.max = 50;
@@ -205,51 +205,51 @@ monitorKeyPress() {
 
     for (;;) {
         wait (0.05);
-        if (self actionslotThreeButtonPressed() && IsDefined(self.pers["myprop"])) {
+        if (self actionslotThreeButtonPressed() && isDefined(self.pers["myprop"])) {
             if (self.pers["mode"] == "normal") {
 				self.pers["myprop"].indexKey = self.pers["myprop"].indexKey + 1;
-				PrintLn("HNS INDEX: " + self.pers["myprop"].indexKey + "   MAX POS: " + level.MAX_USUABLE_MODELS);
+				printLn("HNS INDEX: " + self.pers["myprop"].indexKey + "   MAX POS: " + level.MAX_USUABLE_MODELS);
 				if (self.pers["myprop"].indexKey >= level.MAX_USUABLE_MODELS || self.pers["myprop"].indexKey < 0) {
 					self.pers["myprop"].indexKey = 0;
 				}
 
                 model = level.usableModels[usableModelsKeys[self.pers["myprop"].indexKey]];
                 self.currentModelText setText("Current model: " + model);
-				self.pers["myprop"] SetModel(model);
-				self.pers["myprop"] NotSolid();
+				self.pers["myprop"] setModel(model);
+				self.pers["myprop"] notSolid();
 			}
         }
 
-        if (self actionslotFourButtonPressed() && IsDefined(self.pers["myprop"])) {
+        if (self actionSlotFourButtonPressed() && isDefined(self.pers["myprop"])) {
 			if (self.pers["mode"] == "normal") {
 				self.pers["myprop"].indexKey = self.pers["myprop"].indexKey - 1;
-				PrintLn("HNS INDEX: " + self.pers["myprop"].indexKey + "   MAX POS: " + level.MAX_USUABLE_MODELS);
+				printLn("HNS INDEX: " + self.pers["myprop"].indexKey + "   MAX POS: " + level.MAX_USUABLE_MODELS);
 				if (self.pers["myprop"].indexKey >= level.MAX_USUABLE_MODELS || self.pers["myprop"].indexKey < 0) {
 					self.pers["myprop"].indexKey = 0;
 				}
 
                 model = level.usableModels[usableModelsKeys[self.pers["myprop"].indexKey]];
                 self.currentModelText setText("Current model: " + model);
-				self.pers["myprop"] SetModel(model);
-				self.pers["myprop"] NotSolid();
+				self.pers["myprop"] setModel(model);
+				self.pers["myprop"] notSolid();
 			}
         }
 
-        if (self ActionSlotOneButtonPressed()) {
-            if (GetDvarInt("cg_thirdPersonRange") > minZoom) {
-                self SetClientDvar("cg_thirdPersonRange", GetDvarInt("cg_thirdPersonRange") - zoomChangeRate);
+        if (self actionSlotOneButtonPressed()) {
+            if (getDvarInt("cg_thirdPersonRange") > minZoom) {
+                self setClientDvar("cg_thirdPersonRange", getDvarInt("cg_thirdPersonRange") - zoomChangeRate);
             }
         }
 
-        if (self ActionSlotTwoButtonPressed()) {
-            if (GetDvarInt("cg_thirdPersonRange" ) < maxZoom) {
-                self SetClientDvar("cg_thirdPersonRange", GetDvarInt("cg_thirdPersonRange") + zoomChangeRate);
+        if (self actionSlotTwoButtonPressed()) {
+            if (getDvarInt("cg_thirdPersonRange" ) < maxZoom) {
+                self setClientDvar("cg_thirdPersonRange", getDvarInt("cg_thirdPersonRange") + zoomChangeRate);
             }
         }
 
         self buttonHeldCheck(self.pers["myprop"].rotateYaw_attack);
         self buttonHeldCheck(self.pers["myprop"].rotateYaw_ads);
-        self.pers["myprop"] RotateYaw(self.pers["myprop"].rotateYaw_ads.value + self.pers["myprop"].rotateYaw_attack.value, 0.5);
+        self.pers["myprop"] rotateYaw(self.pers["myprop"].rotateYaw_ads.value + self.pers["myprop"].rotateYaw_attack.value, 0.5);
     }
 }
 
@@ -260,16 +260,13 @@ buttonHeldCheck(struct) {
 	if ([[struct.check]]()) {
         if (struct.max > 0) {
             struct.value += struct.change_rate;
-        }
-        else {
+        } else {
             struct.value -= struct.change_rate;
         }
-    }
-    else if (struct.value != 0) {
+    } else if (struct.value != 0) {
         if (struct.value > 0) {
             struct.value -= struct.reset_rate;
-        }
-        else {
+        } else {
             struct.value += struct.reset_rate;
         }
 
@@ -282,8 +279,7 @@ buttonHeldCheck(struct) {
         if (struct.value > struct.max) {
             struct.value = struct.max;
         }
-    }
-    else {
+    } else {
         if (struct.value < struct.max) {
             struct.value = struct.max;
         }
@@ -291,9 +287,9 @@ buttonHeldCheck(struct) {
 }
 
 adsCheck() {
-    return self AdsButtonPressed();
+    return self adsButtonPressed();
 }
- 
+
 attackCheck() {
-    return self AttackButtonPressed();
+    return self attackButtonPressed();
 }

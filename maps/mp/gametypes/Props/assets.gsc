@@ -20,15 +20,15 @@ This a open-source project. for more information see LICENSE.TXT
 #include maps\mp\gametypes\_hud_util;
 
 addModel(model) {
-    if (!IsDefined(level.availableModels)) {
+    if (!isDefined(level.availableModels)) {
         level.availableModels = [];
     }
 
-    if (IsDefined(level.collMapModels) && IsDefined(level.collMapModels[model])) {
+    if (isDefined(level.collMapModels) && isDefined(level.collMapModels[model])) {
         return;
     }
 
-    if (!IsDefined(level.availableModels[model])) {
+    if (!isDefined(level.availableModels[model])) {
         level.availableModels[model] = model;
     }
 }

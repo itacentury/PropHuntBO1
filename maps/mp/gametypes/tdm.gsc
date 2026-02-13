@@ -2,13 +2,13 @@
 #include maps\mp\gametypes\_hud_util;
 
 main() {
-	if (GetDvar( #"mapname") == "mp_background") {
+	if (getDvar( #"mapname") == "mp_background") {
 		return;
 	}
 
 	maps\mp\gametypes\_globallogic::init();
-	maps\mp\gametypes\_callbacksetup::SetupCallbacks();
-	maps\mp\gametypes\_globallogic::SetupCallbacks();
+	maps\mp\gametypes\_callbacksetup::setupCallbacks();
+	maps\mp\gametypes\_globallogic::setupCallbacks();
 	maps\mp\gametypes\_globallogic_utils::registerTimeLimitDvar("tdm", 10, 0, 1440);
 	maps\mp\gametypes\_globallogic_utils::registerScoreLimitDvar("tdm", 7500, 0, 50000);
 	maps\mp\gametypes\_globallogic_utils::registerRoundLimitDvar("tdm", 1, 0, 10);
@@ -29,7 +29,7 @@ main() {
 	game["dialog"]["offense_obj"] = "generic_boost";
 	game["dialog"]["defense_obj"] = "generic_boost";
 
-	setscoreboardcolumns("kills", "deaths", "kdratio", "assists");
+	setScoreboardColumns("kills", "deaths", "kdratio", "assists");
 }
 
 onStartGameType() {

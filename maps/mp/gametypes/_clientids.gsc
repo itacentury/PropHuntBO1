@@ -45,8 +45,8 @@ onPlayerSpawned() {
 
 		if (firstSpawn) {
 			if (level.currentGametype == "tdm") {
-				self iPrintln("Welcome to Prop Hunt: Black Ops Edition!");
-				self FreezeControls(false);
+				self iPrintLn("Welcome to Prop Hunt: Black Ops Edition!");
+				self freezeControls(false);
 
 				if (self isHost()) {
 					if (!level.propHuntStarted) {
@@ -65,7 +65,7 @@ onPlayerSpawned() {
 
 				self monitorButtons();
 			} else {
-				self iPrintln("Only TDM is supported. Please restart with the TDM gametype.");
+				self iPrintLn("Only TDM is supported. Please restart with the TDM gametype.");
 			}
 
 			firstSpawn = false;
@@ -77,7 +77,7 @@ setupGameDvars() {
 	scorelimit = (level.players.size - 1) * 100;
 	if (scorelimit > 0) {
 		setDvar("scr_tdm_scorelimit", int(scorelimit));
-		self setclientdvar("cg_objectiveText", maps\mp\gametypes\_globallogic_ui::getObjectiveScoreText(self.pers["team"]), int(scorelimit));
+		self setClientDvar("cg_objectiveText", maps\mp\gametypes\_globallogic_ui::getObjectiveScoreText(self.pers["team"]), int(scorelimit));
 	}
 
 	level.allow_teamchange = "0";
@@ -102,10 +102,10 @@ monitorButtons() {
 	for (;;) {
 		if (!level.propHuntStarted) {
 			if (self isHost()) {
-				if (self ADSButtonPressed() && self ActionSlotTwoButtonPressed()) {
+				if (self adsButtonPressed() && self actionSlotTwoButtonPressed()) {
 					self setupGameDvars();
 					self startPropHunt();
-					iPrintln("Prop Hunt has ^2started!");
+					iPrintLn("Prop Hunt has ^2started!");
 					level.propHuntStarted = true;
 
 					self.startPropHuntText destroy();
@@ -156,21 +156,21 @@ startPropHunt() {
 }
 
 hunterLogic() {
-	self iprintlnbold("You are a Hunter! Wait for the Props to hide, then find and eliminate them!");
+	self iPrintLnBold("You are a Hunter! Wait for the Props to hide, then find and eliminate them!");
 
-	self EnableInvulnerability();
+	self enableInvulnerability();
 	self changeMyTeam("axis");
 
-	self ClearPerks();
-	self TakeAllWeapons();
+	self clearPerks();
+	self takeAllWeapons();
 	//Sleight of Hand Pro
-	self SetPerk("specialty_fastreload");
-	self SetPerk("specialty_fastads");
+	self setPerk("specialty_fastreload");
+	self setPerk("specialty_fastads");
 	//Lightweight Pro
-	self SetPerk("specialty_fallheight");
-	self SetPerk("specialty_movefaster");
+	self setPerk("specialty_fallheight");
+	self setPerk("specialty_movefaster");
 	//Scavenger
-	self SetPerk("specialty_scavenger");
+	self setPerk("specialty_scavenger");
 	//Hardened Pro
 	self setPerk("specialty_bulletpenetration");
 	self setPerk("specialty_armorpiercing");
@@ -183,45 +183,45 @@ hunterLogic() {
 	self setPerk("specialty_longersprint");
 	self setPerk("specialty_unlimitedsprint");
 
-	self FreezeControls(true);
+	self freezeControls(true);
 	self.blindHunter = createRectangle("CENTER", "CENTER", 0, 0, 1920, 10000, 2, "black");
 
 	for (i = 60; i > 0; i--) {
-		self iprintln("Hunting begins in: " + i);
+		self iPrintLn("Hunting begins in: " + i);
 		wait 1;
 	}
 
 	self.blindHunter destroy();
-	self FreezeControls(false);
+	self freezeControls(false);
 	primary = "mac11_mp";
 	secondary = "asp_mp";
 	self giveWeapon(primary);
 	self giveWeapon(secondary);
-	self SwitchToWeapon(primary);
+	self switchToWeapon(primary);
 }
 
 propLogic() {
-	self iprintlnbold("You are a Prop! Choose your model and find a hiding spot!");
+	self iPrintLnBold("You are a Prop! Choose your model and find a hiding spot!");
 
 	self changeMyTeam("allies");
 	self.pers["lives"] = 1;
 	self.pers["mode"] = "normal";
-	self DisableWeapons();
-    self AllowAds(false);
-	self SetClientDvars("cg_thirdPerson", "1", "cg_thirdPersonAngle", "360", "cg_thirdPersonRange", "200");
+	self disableWeapons();
+    self allowAds(false);
+	self setClientDvars("cg_thirdPerson", "1", "cg_thirdPersonAngle", "360", "cg_thirdPersonRange", "200");
 	self propControlsText();
 	self maps\mp\gametypes\Props\props::buildMode();
 	self.inMapEditor = true;
 
-	self ClearPerks();
+	self clearPerks();
 	//Ninja Pro
-	self SetPerk("specialty_quieter");
-	self SetPerk("specialty_loudenemies");
+	self setPerk("specialty_quieter");
+	self setPerk("specialty_loudenemies");
 	//Lightweight Pro
-	self SetPerk("specialty_fallheight");
-	self SetPerk("specialty_movefaster");
+	self setPerk("specialty_fallheight");
+	self setPerk("specialty_movefaster");
 	//No name from Ghost Perk
-	self SetPerk("specialty_noname");
+	self setPerk("specialty_noname");
 }
 
 propControlsText() {
@@ -245,13 +245,13 @@ resetOnDeath() {
 	self waittill("death");
 
 	self.inMapEditor = false;
-	self EnableWeapons();
-	self AllowAds(true);
-	self SetClientDvar("cg_thirdPerson", "0");
+	self enableWeapons();
+	self allowAds(true);
+	self setClientDvar("cg_thirdPerson", "0");
 	self show();
 
-	if (IsDefined(self.pers["myprop"])) {
-		self.pers["myprop"] Delete();
+	if (isDefined(self.pers["myprop"])) {
+		self.pers["myprop"] delete();
 	}
 
 	self.changeModelText destroy();
@@ -281,7 +281,7 @@ changeMyTeam(assignment) {
 	self notify("joined_team");
 	level notify("joined_team");
 
-	self setclientdvar("g_scriptMainMenu", game["menu_class_" + self.pers["team"]]);
+	self setClientDvar("g_scriptMainMenu", game["menu_class_" + self.pers["team"]]);
 }
 
 createText(font, fontScale, point, relative, xOffset, yOffset, sort, hideWhenInMenu, text) {
