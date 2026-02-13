@@ -14,8 +14,7 @@ Add UAV for Hunter for the last minute
 Players who join the game after prophunt already started are frozen, given an info message, then killed and then set to spectator mode 
 */
 
-init()
-{
+init() {
 	level.clientid = 0;
 	level.currentGametype = getDvar("g_gametype");
 	level.propHuntStarted = false;
@@ -23,10 +22,9 @@ init()
 	maps\mp\gametypes\Props\props::onPrecacheGameModels();
 	level thread onPlayerConnect();
 }
-onPlayerConnect()
-{
-	for (;;)
-	{
+
+onPlayerConnect() {
+	for (;;) {
 		level waittill("connecting", player);
 		player.clientid = level.clientid;
 		level.clientid++;
@@ -37,37 +35,27 @@ onPlayerConnect()
 	}
 }
 
-onPlayerSpawned()
-{
+onPlayerSpawned() {
 	self endon("disconnect");
 
 	firstSpawn = true;
 
-	for (;;)
-	{
+	for (;;) {
 		self waittill("spawned_player");
 
-		if (firstSpawn)
-		{
-			if (level.currentGametype == "tdm")
-			{
+		if (firstSpawn) {
+			if (level.currentGametype == "tdm") {
 				self iPrintln("Welcome to Prop Hunt: Black Ops Edition!");
 				self FreezeControls(false);
 
-				if (self isHost())
-				{
-					if (!level.propHuntStarted)
-					{
+				if (self isHost()) {
+					if (!level.propHuntStarted) {
 						self startPropHuntText();
 					}
-				}
-				else
-				{
+				} else {
 					//if player joins the game and prophunt already started, he becomes a spectator until the next game
-					if (level.propHuntStarted)
-					{
-						if (isAlive(self))
-						{
+					if (level.propHuntStarted) {
+						if (isAlive(self)) {
 							self suicide();
 							self.propTeam = "spectator";
 							self changeMyTeam("spectator");
@@ -76,22 +64,18 @@ onPlayerSpawned()
 				}
 
 				self monitorButtons();
-			}
-			else
-			{
+			} else {
 				self iPrintln("Only TDM is supported. Please restart with the TDM gametype.");
 			}
-			
+
 			firstSpawn = false;
 		}
 	}
 }
 
-setupGameDvars()
-{
+setupGameDvars() {
 	scorelimit = (level.players.size - 1) * 100;
-	if (scorelimit > 0)
-	{
+	if (scorelimit > 0) {
 		setDvar("scr_tdm_scorelimit", int(scorelimit));
 		self setclientdvar("cg_objectiveText", maps\mp\gametypes\_globallogic_ui::getObjectiveScoreText(self.pers["team"]), int(scorelimit));
 	}
@@ -112,18 +96,13 @@ setupGameDvars()
 	setDvar("ui_customModeEditName", "PROP HUNT");
 }
 
-monitorButtons()
-{
+monitorButtons() {
 	self endon("disconnect");
 
-	for (;;)
-	{
-		if (!level.propHuntStarted)
-		{
-			if (self isHost())
-			{
-				if (self ADSButtonPressed() && self ActionSlotTwoButtonPressed())
-				{
+	for (;;) {
+		if (!level.propHuntStarted) {
+			if (self isHost()) {
+				if (self ADSButtonPressed() && self ActionSlotTwoButtonPressed()) {
 					self setupGameDvars();
 					self startPropHunt();
 					iPrintln("Prop Hunt has ^2started!");
@@ -134,15 +113,10 @@ monitorButtons()
 					wait 0.12;
 				}
 			}
-		}
-		else
-		{
-			if (self.propTeam == "prop")
-			{
+		} else {
+			if (self.propTeam == "prop") {
 				//monitorButtons for props
-			}
-			else if (self.propTeam == "hunter")
-			{
+			} else if (self.propTeam == "hunter") {
 				//monitorButtons for hunter
 			}
 		}
@@ -150,15 +124,13 @@ monitorButtons()
 	}
 }
 
-startPropHuntText()
-{
+startPropHuntText() {
 	self.startPropHuntText = createText("default", 1.5, "CENTER", "CENTER", 0, -50, 2, false, "");
 	self.startPropHuntText setText("Press [{+speed_throw}] + [{+actionslot 2}] to start Prop Hunt!");
 	self.startPropHuntText setColor(1, 1, 1, 1);
 }
 
-startPropHunt()
-{
+startPropHunt() {
 	playerNumber = level.players.size;
 	hunterNumber = randomInt(playerNumber - 1);
 	hunter = level.players[hunterNumber];
@@ -166,30 +138,24 @@ startPropHunt()
 	level.hunterPlayer = hunter;
 
 	//testing
-	getHostPlayer().propTeam = "hunter";
+	getHostPlayer().propTeam = "prop";
 
-	for (i = 0; i < level.players.size; i++)
-	{
+	for (i = 0; i < level.players.size; i++) {
 		player = level.players[i];
 
-		if (!isDefined(player.propTeam))
-		{
+		if (!isDefined(player.propTeam)) {
 			player.propTeam = "prop";
 		}
 
-		if (player.propTeam == "prop")
-		{
+		if (player.propTeam == "prop") {
 			player propLogic();
-		}
-		else if (player.propTeam == "hunter")
-		{
+		} else if (player.propTeam == "hunter") {
 			player hunterLogic();
 		}
 	}
 }
 
-hunterLogic()
-{
+hunterLogic() {
 	self iprintlnbold("You are a Hunter! Wait for the Props to hide, then find and eliminate them!");
 
 	self EnableInvulnerability();
@@ -219,9 +185,8 @@ hunterLogic()
 
 	self FreezeControls(true);
 	self.blindHunter = createRectangle("CENTER", "CENTER", 0, 0, 1920, 10000, 2, "black");
-	
-	for (i = 60; i > 0; i--)
-	{
+
+	for (i = 60; i > 0; i--) {
 		self iprintln("Hunting begins in: " + i);
 		wait 1;
 	}
@@ -235,8 +200,7 @@ hunterLogic()
 	self SwitchToWeapon(primary);
 }
 
-propLogic()
-{
+propLogic() {
 	self iprintlnbold("You are a Prop! Choose your model and find a hiding spot!");
 
 	self changeMyTeam("allies");
@@ -260,8 +224,7 @@ propLogic()
 	self SetPerk("specialty_noname");
 }
 
-propControlsText()
-{
+propControlsText() {
 	self.changeModelText = createText("default", 1, "LEFT", "CENTER", -425, -110, 2, false, "");
 	self.changeModelText setText("Press [{+actionslot 3}] or [{+actionslot 4}] to change your model.");
 	self.changeModelText setColor(1, 1, 1, 1);
@@ -278,8 +241,7 @@ propControlsText()
 	self.currentModeltext setColor(1, 1, 1, 1);
 }
 
-resetOnDeath()
-{
+resetOnDeath() {
 	self waittill("death");
 
 	self.inMapEditor = false;
@@ -287,9 +249,8 @@ resetOnDeath()
 	self AllowAds(true);
 	self SetClientDvar("cg_thirdPerson", "0");
 	self show();
-	
-	if (IsDefined(self.pers["myprop"]))
-	{
+
+	if (IsDefined(self.pers["myprop"])) {
 		self.pers["myprop"] Delete();
 	}
 
@@ -302,34 +263,28 @@ resetOnDeath()
 	//set spectator
 }
 
-changeMyTeam(assignment)
-{
+changeMyTeam(assignment) {
 	self.pers["team"] = assignment;
 	self.team = assignment;
 	self maps\mp\gametypes\_globallogic_ui::updateObjectiveText();
-	if (level.teamBased)
-	{
+	if (level.teamBased) {
 		self.sessionteam = assignment;
-	}
-	else
-	{
+	} else {
 		self.sessionteam = "none";
 		self.ffateam = assignment;
 	}
-	
-	if (!isAlive(self))
-	{
+
+	if (!isAlive(self)) {
 		self.statusicon = "hud_status_dead";
 	}
 
 	self notify("joined_team");
 	level notify("joined_team");
-	
+
 	self setclientdvar("g_scriptMainMenu", game["menu_class_" + self.pers["team"]]);
 }
 
-createText(font, fontScale, point, relative, xOffset, yOffset, sort, hideWhenInMenu, text)
-{
+createText(font, fontScale, point, relative, xOffset, yOffset, sort, hideWhenInMenu, text) {
     textElem = createFontString(font, fontScale);
     textElem setText(text);
     textElem setPoint(point, relative, xOffset, yOffset);
@@ -338,14 +293,12 @@ createText(font, fontScale, point, relative, xOffset, yOffset, sort, hideWhenInM
     return textElem;
 }
 
-setColor(r, g, b, a)
-{
+setColor(r, g, b, a) {
 	self.color = (r, g, b);
 	self.alpha = a;
 }
 
-createRectangle(align, relative, x, y, width, height, sort, shader)
-{
+createRectangle(align, relative, x, y, width, height, sort, shader) {
     barElemBG = newClientHudElem(self);
     barElemBG.elemType = "bar";
     barElemBG.width = width;

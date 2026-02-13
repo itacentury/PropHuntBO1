@@ -22,19 +22,16 @@ This a open-source project. for more information see LICENSE.TXT
 #include maps\mp\gametypes\_globallogic_score;
 #include maps\mp\gametypes\Props\assets;
 
-buildMode()
-{
+buildMode() {
 	self notify("me_buildmode");
     self notify("stop_ammo");
 
-    if (IsDefined(self.pers["myprop"]))
-    {
+    if (IsDefined(self.pers["myprop"])) {
         self.pers["myprop"] Delete();
 	}
 
     //modes
-	if (self.pers["mode"] == "normal")
-	{
+	if (self.pers["mode"] == "normal") {
 		usableModelsKeys = GetArrayKeys(level.usableModels);
 		self.pers["myprop"] = spawn("script_model", self.origin);
 		self.pers["myprop"].health = 10000;
@@ -51,25 +48,22 @@ buildMode()
     self thread monitorKeyPress();
 }
 
-attachModel(player)
-{
+attachModel(player) {
     player endon("disconnect");
     player endon("killed_player");
     player endon("death");
     self endon("death");
-	
-    for(;;)
-    {
-        wait 0.01;
-        if (self.origin != player.origin)
-        {
+
+    for (;;) {
+        if (self.origin != player.origin) {
             self MoveTo(player.origin, 0.1);
         }
+
+        wait 0.01;
     }
 }
 
-detachOnDisconnect(player)
-{
+detachOnDisconnect(player) {
     player endon("death");
     player endon("killed_player");
 	
@@ -79,49 +73,39 @@ detachOnDisconnect(player)
     self Delete();
 }
 
-onPrecacheGameModels()
-{
+onPrecacheGameModels() {
     precacheLevelModels();
-    if (IsDefined(level.availableModels) && level.availableModels.size > 0 )
-    {
+    if (IsDefined(level.availableModels) && level.availableModels.size > 0 ) {
         level.availableModels = array_randomize(level.availableModels);
-        if (level.availableModels.size < level.MAX_USUABLE_MODELS)
-        {
+        if (level.availableModels.size < level.MAX_USUABLE_MODELS) {
             level.MAX_USUABLE_MODELS = level.availableModels.size;
         }
 
         availableModelsKeys = GetArrayKeys(level.availableModels);
-        if (!IsDefined(level.usableModels))
-        {
+        if (!IsDefined(level.usableModels)) {
             level.usableModels = [];
         }
 
-        for (x = 0; x < level.availableModels.size; x++)
-        {
+        for (x = 0; x < level.availableModels.size; x++) {
             PreCacheModel(level.availableModels[availableModelsKeys[x]]);
             level.usableModels[level.availableModels[availableModelsKeys[x]]] = level.availableModels[availableModelsKeys[x]];
-            if (level.usableModels.size >= level.MAX_USUABLE_MODELS)
-            {
+            if (level.usableModels.size >= level.MAX_USUABLE_MODELS) {
                 return;
             }
         }
     }
-	else
-    {
+	else {
 		self iPrintln("Error: Failed to load models. No models have been assigned.");
     }
 }
 
-precacheLevelModels()
-{
-    if (IsDefined(level.force_hns_models))
-    {
+precacheLevelModels() {
+    if (IsDefined(level.force_hns_models)) {
         [[level.force_hns_models]]();
         return;
     }
 
-    switch (GetDvar(#"mapname"))
-    {
+    switch (GetDvar(#"mapname")) {
         case "mp_array":
             mpArrayPrecache();
             break;
@@ -188,17 +172,18 @@ precacheLevelModels()
         case "mp_zoo":
             mpZooPrecache();
             break;
+        default:
+            break;
     }
 }
 
-monitorKeyPress()
-{
+monitorKeyPress() {
 	self endon("disconnect");
     self endon("killed_player");
     self endon("death");
 	self endon("me_buildmode"); //kill when buildmode restarts
     level endon("game_ended");
-	
+
     usableModelsKeys = GetArrayKeys(level.usableModels);
     minZoom = 125;
     maxZoom = 525;
@@ -217,18 +202,14 @@ monitorKeyPress()
     self.pers["myprop"].rotateYaw_ads.change_rate = 1;
     self.pers["myprop"].rotateYaw_ads.reset_rate = 50;
     self.pers["myprop"].angles = self.angles;
-	
-    for (;;)
-    {
+
+    for (;;) {
         wait (0.05);
-        if (self actionslotThreeButtonPressed() && IsDefined(self.pers["myprop"]))
-        {
-            if (self.pers["mode"] == "normal")
-			{
+        if (self actionslotThreeButtonPressed() && IsDefined(self.pers["myprop"])) {
+            if (self.pers["mode"] == "normal") {
 				self.pers["myprop"].indexKey = self.pers["myprop"].indexKey + 1;
 				PrintLn("HNS INDEX: " + self.pers["myprop"].indexKey + "   MAX POS: " + level.MAX_USUABLE_MODELS);
-				if (self.pers["myprop"].indexKey >= level.MAX_USUABLE_MODELS || self.pers["myprop"].indexKey < 0)
-                {
+				if (self.pers["myprop"].indexKey >= level.MAX_USUABLE_MODELS || self.pers["myprop"].indexKey < 0) {
 					self.pers["myprop"].indexKey = 0;
 				}
 
@@ -239,14 +220,11 @@ monitorKeyPress()
 			}
         }
 
-        if (self actionslotFourButtonPressed() && IsDefined(self.pers["myprop"]))
-        {
-			if (self.pers["mode"] == "normal")
-			{
+        if (self actionslotFourButtonPressed() && IsDefined(self.pers["myprop"])) {
+			if (self.pers["mode"] == "normal") {
 				self.pers["myprop"].indexKey = self.pers["myprop"].indexKey - 1;
 				PrintLn("HNS INDEX: " + self.pers["myprop"].indexKey + "   MAX POS: " + level.MAX_USUABLE_MODELS);
-				if (self.pers["myprop"].indexKey >= level.MAX_USUABLE_MODELS || self.pers["myprop"].indexKey < 0)
-                {
+				if (self.pers["myprop"].indexKey >= level.MAX_USUABLE_MODELS || self.pers["myprop"].indexKey < 0) {
 					self.pers["myprop"].indexKey = 0;
 				}
 
@@ -257,18 +235,14 @@ monitorKeyPress()
 			}
         }
 
-        if (self ActionSlotOneButtonPressed())
-        {
-            if (GetDvarInt("cg_thirdPersonRange") > minZoom)
-            {
+        if (self ActionSlotOneButtonPressed()) {
+            if (GetDvarInt("cg_thirdPersonRange") > minZoom) {
                 self SetClientDvar("cg_thirdPersonRange", GetDvarInt("cg_thirdPersonRange") - zoomChangeRate);
             }
         }
 
-        if (self ActionSlotTwoButtonPressed())
-        {
-            if (GetDvarInt("cg_thirdPersonRange" ) < maxZoom)
-            {
+        if (self ActionSlotTwoButtonPressed()) {
+            if (GetDvarInt("cg_thirdPersonRange" ) < maxZoom) {
                 self SetClientDvar("cg_thirdPersonRange", GetDvarInt("cg_thirdPersonRange") + zoomChangeRate);
             }
         }
@@ -279,61 +253,47 @@ monitorKeyPress()
     }
 }
 
-buttonHeldCheck(struct)
-{
+buttonHeldCheck(struct) {
     self endon("disconnect");
     self endon("death");
-    
-	if ([[struct.check]]())
-    {
-        if (struct.max > 0)
-        {
+
+	if ([[struct.check]]()) {
+        if (struct.max > 0) {
             struct.value += struct.change_rate;
         }
-        else
-        {
+        else {
             struct.value -= struct.change_rate;
         }
     }
-    else if (struct.value != 0)
-    {
-        if (struct.value > 0)
-        {
+    else if (struct.value != 0) {
+        if (struct.value > 0) {
             struct.value -= struct.reset_rate;
         }
-        else
-        {
+        else {
             struct.value += struct.reset_rate;
         }
 
-        if (abs(struct.value) < struct.reset_rate)
-        {
+        if (abs(struct.value) < struct.reset_rate) {
             struct.value = 0;
         }
     }
 
-    if (struct.max > 0)
-    {
-        if (struct.value > struct.max)
-        {
+    if (struct.max > 0) {
+        if (struct.value > struct.max) {
             struct.value = struct.max;
         }
     }
-    else
-    {
-        if (struct.value < struct.max)
-        {
+    else {
+        if (struct.value < struct.max) {
             struct.value = struct.max;
         }
     }
 }
 
-adsCheck()
-{
+adsCheck() {
     return self AdsButtonPressed();
 }
  
-attackCheck()
-{
+attackCheck() {
     return self AttackButtonPressed();
 }
