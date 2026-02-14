@@ -26,25 +26,26 @@ buildMode() {
 	self notify("me_buildmode");
     self notify("stop_ammo");
 
-    if (isDefined(self.pers["myprop"])) {
-        self.pers["myprop"] delete();
+    if (isDefined(self.pers["myProp"])) {
+        self.pers["myProp"] delete();
 	}
 
     //modes
 	if (self.pers["mode"] == "normal") {
 		usableModelsKeys = getArrayKeys(level.usableModels);
-		self.pers["myprop"] = spawn("script_model", self.origin);
-		self.pers["myprop"].health = 10000;
-		self.pers["myprop"].owner = self;
-		self.pers["myprop"].angles = self.angles;
-		self.pers["myprop"].indexKey = randomInt(level.MAX_USUABLE_MODELS);
-		self.pers["myprop"] setModel(level.usableModels[usableModelsKeys[self.pers["myprop"].indexKey]]);
-        self.currentModeltext setText("Current model: " + level.usableModels[usableModelsKeys[self.pers["myprop"].indexKey]]);
+		self.pers["myProp"] = spawn("script_model", self.origin);
+		self.pers["myProp"].health = 10000;
+		self.pers["myProp"].owner = self;
+		self.pers["myProp"].angles = self.angles;
+		self.pers["myProp"].indexKey = randomInt(level.MAX_USABLE_MODELS);
+		self.pers["myProp"] setModel(level.usableModels[usableModelsKeys[self.pers["myProp"].indexKey]]);
+        self.currentModelText setText("Current model: " + level.usableModels[usableModelsKeys[self.pers["myProp"].indexKey]]);
 	}
 
-    self.pers["myprop"] setCanDamage(true);
-    self.pers["myprop"] thread detachOnDisconnect(self);
-    self.pers["myprop"] thread attachModel(self);
+    self hide();
+    self.pers["myProp"] setCanDamage(true);
+    self.pers["myProp"] thread detachOnDisconnect(self);
+    self.pers["myProp"] thread attachModel(self);
     self thread monitorKeyPress();
 }
 
@@ -77,8 +78,8 @@ onPrecacheGameModels() {
     precacheLevelModels();
     if (isDefined(level.availableModels) && level.availableModels.size > 0 ) {
         level.availableModels = array_randomize(level.availableModels);
-        if (level.availableModels.size < level.MAX_USUABLE_MODELS) {
-            level.MAX_USUABLE_MODELS = level.availableModels.size;
+        if (level.availableModels.size < level.MAX_USABLE_MODELS) {
+            level.MAX_USABLE_MODELS = level.availableModels.size;
         }
 
         availableModelsKeys = getArrayKeys(level.availableModels);
@@ -89,7 +90,7 @@ onPrecacheGameModels() {
         for (x = 0; x < level.availableModels.size; x++) {
             precacheModel(level.availableModels[availableModelsKeys[x]]);
             level.usableModels[level.availableModels[availableModelsKeys[x]]] = level.availableModels[availableModelsKeys[x]];
-            if (level.usableModels.size >= level.MAX_USUABLE_MODELS) {
+            if (level.usableModels.size >= level.MAX_USABLE_MODELS) {
                 return;
             }
         }
@@ -204,52 +205,53 @@ monitorKeyPress() {
     self.pers["myprop"].angles = self.angles;
 
     for (;;) {
-        wait (0.05);
-        if (self actionslotThreeButtonPressed() && isDefined(self.pers["myprop"])) {
+        if (self actionslotThreeButtonPressed() && isDefined(self.pers["myProp"])) {
             if (self.pers["mode"] == "normal") {
-				self.pers["myprop"].indexKey = self.pers["myprop"].indexKey + 1;
-				printLn("HNS INDEX: " + self.pers["myprop"].indexKey + "   MAX POS: " + level.MAX_USUABLE_MODELS);
-				if (self.pers["myprop"].indexKey >= level.MAX_USUABLE_MODELS || self.pers["myprop"].indexKey < 0) {
-					self.pers["myprop"].indexKey = 0;
+				self.pers["myProp"].indexKey = self.pers["myProp"].indexKey + 1;
+				printLn("HNS INDEX: " + self.pers["myProp"].indexKey + "   MAX POS: " + level.MAX_USABLE_MODELS);
+				if (self.pers["myProp"].indexKey >= level.MAX_USABLE_MODELS || self.pers["myProp"].indexKey < 0) {
+					self.pers["myProp"].indexKey = 0;
 				}
 
-                model = level.usableModels[usableModelsKeys[self.pers["myprop"].indexKey]];
+                model = level.usableModels[usableModelsKeys[self.pers["myProp"].indexKey]];
                 self.currentModelText setText("Current model: " + model);
-				self.pers["myprop"] setModel(model);
-				self.pers["myprop"] notSolid();
+				self.pers["myProp"] setModel(model);
+				self.pers["myProp"] notSolid();
 			}
         }
 
-        if (self actionSlotFourButtonPressed() && isDefined(self.pers["myprop"])) {
+        if (self actionSlotFourButtonPressed() && isDefined(self.pers["myProp"])) {
 			if (self.pers["mode"] == "normal") {
-				self.pers["myprop"].indexKey = self.pers["myprop"].indexKey - 1;
-				printLn("HNS INDEX: " + self.pers["myprop"].indexKey + "   MAX POS: " + level.MAX_USUABLE_MODELS);
-				if (self.pers["myprop"].indexKey >= level.MAX_USUABLE_MODELS || self.pers["myprop"].indexKey < 0) {
-					self.pers["myprop"].indexKey = 0;
+				self.pers["myProp"].indexKey = self.pers["myProp"].indexKey - 1;
+				printLn("HNS INDEX: " + self.pers["myProp"].indexKey + "   MAX POS: " + level.MAX_USABLE_MODELS);
+				if (self.pers["myProp"].indexKey >= level.MAX_USABLE_MODELS || self.pers["myProp"].indexKey < 0) {
+					self.pers["myProp"].indexKey = 0;
 				}
 
-                model = level.usableModels[usableModelsKeys[self.pers["myprop"].indexKey]];
+                model = level.usableModels[usableModelsKeys[self.pers["myProp"].indexKey]];
                 self.currentModelText setText("Current model: " + model);
-				self.pers["myprop"] setModel(model);
-				self.pers["myprop"] notSolid();
+				self.pers["myProp"] setModel(model);
+				self.pers["myProp"] notSolid();
 			}
         }
 
         if (self actionSlotOneButtonPressed()) {
-            if (getDvarInt("cg_thirdPersonRange") > minZoom) {
-                self setClientDvar("cg_thirdPersonRange", getDvarInt("cg_thirdPersonRange") - zoomChangeRate);
+            if (getDvarInt("cg_thirdPersonRange") > level.minZoom) {
+                self setClientDvar("cg_thirdPersonRange", getDvarInt("cg_thirdPersonRange") - level.zoomChangeRate);
             }
         }
 
         if (self actionSlotTwoButtonPressed()) {
-            if (getDvarInt("cg_thirdPersonRange" ) < maxZoom) {
-                self setClientDvar("cg_thirdPersonRange", getDvarInt("cg_thirdPersonRange") + zoomChangeRate);
+            if (getDvarInt("cg_thirdPersonRange" ) < level.maxZoom) {
+                self setClientDvar("cg_thirdPersonRange", getDvarInt("cg_thirdPersonRange") + level.zoomChangeRate);
             }
         }
 
-        self buttonHeldCheck(self.pers["myprop"].rotateYaw_attack);
-        self buttonHeldCheck(self.pers["myprop"].rotateYaw_ads);
-        self.pers["myprop"] rotateYaw(self.pers["myprop"].rotateYaw_ads.value + self.pers["myprop"].rotateYaw_attack.value, 0.5);
+        self buttonHeldCheck(self.pers["myProp"].rotateYaw_attack);
+        self buttonHeldCheck(self.pers["myProp"].rotateYaw_ads);
+        self.pers["myProp"] rotateYaw(self.pers["myProp"].rotateYaw_ads.value + self.pers["myProp"].rotateYaw_attack.value, 0.5);
+        
+        wait .05;
     }
 }
 

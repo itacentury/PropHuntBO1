@@ -19,6 +19,10 @@ init() {
 	level.currentGametype = getDvar("g_gametype");
 	level.propHuntStarted = false;
 
+	level.minZoom = 125;
+    level.maxZoom = 525;
+    level.zoomChangeRate = 5;
+
 	maps\mp\gametypes\Props\props::onPrecacheGameModels();
 	level thread onPlayerConnect();
 }
@@ -237,8 +241,8 @@ propControlsText() {
 	self.changeFOVText setText("Press [{+actionslot 1}] or [{+actionslot 2}] to adjust your FOV.");
 	self.changeFOVText setColor(1, 1, 1, 1);
 
-	self.currentModeltext = createText("default", 1, "LEFT", "CENTER", -425, -50, 2, false, "");
-	self.currentModeltext setColor(1, 1, 1, 1);
+	self.currentModelText = createText("default", 1, "LEFT", "CENTER", -425, -50, 2, false, "");
+	self.currentModelText setColor(1, 1, 1, 1);
 }
 
 resetOnDeath() {
@@ -250,14 +254,14 @@ resetOnDeath() {
 	self setClientDvar("cg_thirdPerson", "0");
 	self show();
 
-	if (isDefined(self.pers["myprop"])) {
-		self.pers["myprop"] delete();
+	if (isDefined(self.pers["myProp"])) {
+		self.pers["myProp"] delete();
 	}
 
 	self.changeModelText destroy();
 	self.rotateModelText destroy();
 	self.changeFOVText destroy();
-	self.currentModeltext destroy();
+	self.currentModelText destroy();
 
 	//delete text
 	//set spectator
