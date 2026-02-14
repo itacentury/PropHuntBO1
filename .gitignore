@@ -1,2 +1,5 @@
-
-games_mp.log
+*.log
+*.ff
+*.files
+*.iwd
+*.tmp
