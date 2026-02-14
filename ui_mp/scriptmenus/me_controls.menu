@@ -1,0 +1,209 @@
+#include "ui/menudef.h"
+
+#define ORIGIN_QUICKMESSAGETAB			32 224
+#define ORIGIN_QUICKMESSAGEWINDOW		32 256
+
+{
+	menuDef
+	{
+		name			"me_controls"
+		fullscreen		0
+		rect			0 0 640 480
+		focuscolor		1 1 1 1
+		disablecolor	0 0 0 0
+ 		style			WINDOW_STYLE_EMPTY
+
+		onOpen
+		{
+			setDvar cl_bypassMouseInput "1"
+		}
+		onClose
+		{
+			setDvar cl_bypassMouseInput "0"
+		}
+
+// WINDOW BACKGROUND
+		itemDef
+		{
+			name			"window_background"
+			visible			1
+			rect			0 0 224 192
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+	 		style			WINDOW_STYLE_FILLED
+			forecolor		1 1 1 1
+			backcolor		0 0 0 0.7975
+			decoration
+		}
+	
+// WINDOW LINES
+		itemDef
+		{
+			name			"window_lines"
+			visible			1
+			rect			3 0 2 187
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			style			WINDOW_STYLE_FILLED
+			backcolor		1 1 1 .125
+			decoration
+		}
+		itemDef
+		{
+			name			"window_lines"
+			visible			1
+			rect			219 0 2 187
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			style			WINDOW_STYLE_FILLED
+			backcolor		1 1 1 .125
+			decoration
+		}
+		itemDef
+		{
+			name			"window_lines"
+			visible			1
+			rect			5 0 214 2
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			style			WINDOW_STYLE_FILLED
+			backcolor		1 1 1 .125
+			decoration
+		}
+		itemDef
+		{
+			name			"window_lines"
+			visible			1
+			rect			3 187 218 2
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			style			WINDOW_STYLE_FILLED
+			backcolor		1 1 1 .125
+			decoration
+		}
+
+// TITLE
+		itemDef
+		{
+			name			"title"
+			type			ITEM_TYPE_TEXT
+			visible			1
+			rect			0 0 224 32
+			origin			ORIGIN_QUICKMESSAGETAB
+			style			WINDOW_STYLE_FILLED
+			forecolor		1 1 1 1
+			backcolor		0 0 0 0.7975
+			text			"Map^1Editor^7: Controls"
+			textfont		UI_FONT_NORMAL
+			textscale		.24
+			textaligny		24
+			textalign		ITEM_ALIGN_CENTER
+			decoration
+		}
+		itemDef
+		{
+			name			"title_quickmessage_gray"
+			visible			1
+			rect			3 3 218 29
+			origin			ORIGIN_QUICKMESSAGETAB
+			style			WINDOW_STYLE_FILLED
+			backcolor		1 1 1 .125
+			decoration
+		}
+
+		itemDef
+		{
+			name			"window"
+			group			ingamebox
+			type			ITEM_TYPE_TEXT
+			visible			1
+			rect			16 20 0 0
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			forecolor		1 1 1 1
+			textfont		UI_FONT_NORMAL
+			textscale		.24
+			textaligny		8
+			text			"^3[{+smoke}] ^7Cycle Model/Object ^3[{+frag}]"
+			decoration
+		}
+		execKey "1" {}
+	
+		itemDef
+		{
+			name			"window"
+			group			ingamebox
+			type			ITEM_TYPE_TEXT
+			visible			1
+			rect			16 36 0 0
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			forecolor		1 1 1 1
+			textfont		UI_FONT_NORMAL
+			textscale		.24
+			textaligny		8
+			text			"^3[{+attack}] ^7Rotate Model/Object ^3[{+toggleads_throw}]"
+			decoration
+		}
+		execKey "2" {}
+	
+		itemDef
+		{
+			name			"window"
+			group			ingamebox
+			type			ITEM_TYPE_TEXT
+			visible			1
+			rect			16 52 0 0
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			forecolor		1 1 1 1
+			textfont		UI_FONT_NORMAL
+			textscale		.24
+			textaligny		8
+			text			"^37 ^7Spawn currently selected model/object"
+			decoration
+		}
+		execKey "3" {}
+	
+		itemDef
+		{
+			name			"window"
+			group			ingamebox
+			type			ITEM_TYPE_TEXT
+			visible			1
+			rect			16 68 0 0
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			forecolor		1 1 1 1
+			textfont		UI_FONT_NORMAL
+			textscale		.24
+			textaligny		8
+			text			"^3[{+activate}] ^7Open Map^1Editor^7 Command Menu"
+			decoration
+		}
+		execKey "4" {}
+	
+		itemDef
+		{
+			name			"window"
+			group			ingamebox
+			type			ITEM_TYPE_TEXT
+			visible			1
+			rect			16 84 0 0
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			forecolor		1 1 1 1
+			textfont		UI_FONT_NORMAL
+			textscale		.24
+			textaligny		8
+			text			"^3[{+actionslot 3}] ^7Zoom in/out (in build mode) ^3[{+actionslot 4}]"
+			decoration
+		}
+		execKey "5" {}
+	
+		itemDef
+		{
+			name			"window"
+			type			ITEM_TYPE_TEXT
+			visible			1
+			rect			16 148 0 0
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			forecolor		1 1 1 1
+			textfont		UI_FONT_NORMAL
+			textscale		.24
+			textaligny		8
+			text			"Esc To Exit"
+			decoration
+		}
+	}
+}

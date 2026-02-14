@@ -1,0 +1,260 @@
+#include "ui/menudef.h"
+
+#define ORIGIN_QUICKMESSAGETAB			32 224
+#define ORIGIN_QUICKMESSAGEWINDOW		32 256
+
+{
+	menuDef
+	{
+		name			"me_cmd"
+		fullscreen		0
+		rect			0 0 640 480
+		focuscolor		1 1 1 1
+		disablecolor	0 0 0 0
+ 		style			WINDOW_STYLE_EMPTY
+
+		onOpen
+		{
+			setDvar cl_bypassMouseInput "1"
+		}
+		onClose
+		{
+			setDvar cl_bypassMouseInput "0"
+		}
+
+// WINDOW BACKGROUND
+		itemDef
+		{
+			name			"window_background"
+			visible			1
+			rect			0 0 224 192
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+	 		style			WINDOW_STYLE_FILLED
+			forecolor		1 1 1 1
+			backcolor		0 0 0 0.7975
+			decoration
+		}
+	
+// WINDOW LINES
+		itemDef
+		{
+			name			"window_lines"
+			visible			1
+			rect			3 0 2 187
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			style			WINDOW_STYLE_FILLED
+			backcolor		1 1 1 .125
+			decoration
+		}
+		itemDef
+		{
+			name			"window_lines"
+			visible			1
+			rect			219 0 2 187
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			style			WINDOW_STYLE_FILLED
+			backcolor		1 1 1 .125
+			decoration
+		}
+		itemDef
+		{
+			name			"window_lines"
+			visible			1
+			rect			5 0 214 2
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			style			WINDOW_STYLE_FILLED
+			backcolor		1 1 1 .125
+			decoration
+		}
+		itemDef
+		{
+			name			"window_lines"
+			visible			1
+			rect			3 187 218 2
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			style			WINDOW_STYLE_FILLED
+			backcolor		1 1 1 .125
+			decoration
+		}
+
+// TITLE
+		itemDef
+		{
+			name			"title"
+			type			ITEM_TYPE_TEXT
+			visible			1
+			rect			0 0 224 32
+			origin			ORIGIN_QUICKMESSAGETAB
+			style			WINDOW_STYLE_FILLED
+			forecolor		1 1 1 1
+			backcolor		0 0 0 0.7975
+			text			"^7Map^1Editor ^7V1: Press a key"
+			textfont		UI_FONT_NORMAL
+			textscale		.24
+			textaligny		24
+			textalign		ITEM_ALIGN_CENTER
+			decoration
+		}
+		itemDef
+		{
+			name			"title_quickmessage_gray"
+			visible			1
+			rect			3 3 218 29
+			origin			ORIGIN_QUICKMESSAGETAB
+			style			WINDOW_STYLE_FILLED
+			backcolor		1 1 1 .125
+			decoration
+		}
+
+		itemDef
+		{
+			name			"window"
+			group			ingamebox
+			type			ITEM_TYPE_TEXT
+			visible			1
+			rect			16 20 0 0
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			forecolor		1 1 1 1
+			textfont		UI_FONT_NORMAL
+			textscale		.24
+			textaligny		8
+			text			"^31. ^7Switch to FPS mode"
+			decoration
+		}
+		execKey "1" { scriptMenuResponse "fpsmode"; close me_cmd; }
+	
+		itemDef
+		{
+			name			"window"
+			group			ingamebox
+			type			ITEM_TYPE_TEXT
+			visible			1
+			rect			16 36 0 0
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			forecolor		1 1 1 1
+			textfont		UI_FONT_NORMAL
+			textscale		.24
+			textaligny		8
+			text			"^32. ^7Switch to build mode"
+			decoration
+		}
+		execKey "2" { scriptMenuResponse "buildmode"; close me_cmd }
+	
+		itemDef
+		{
+			name			"window"
+			group			ingamebox
+			type			ITEM_TYPE_TEXT
+			visible			1
+			rect			16 52 0 0
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			forecolor		1 1 1 1
+			textfont		UI_FONT_NORMAL
+			textscale		.24
+			textaligny		8
+			text			"^33. ^7Change Spawn Mode (Build Mode)"
+			decoration
+		}
+		execKey "3" { scriptMenuResponse "switchto"; close me_cmd }
+	
+		itemDef
+		{
+			name			"window"
+			group			ingamebox
+			type			ITEM_TYPE_TEXT
+			visible			1
+			rect			16 68 0 0
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			forecolor		1 1 1 1
+			textfont		UI_FONT_NORMAL
+			textscale		.24
+			textaligny		8
+			text			"^34. ^7Spawn Collisions....^2(Disabled Until V1)"
+			decoration
+		}
+		execKey "4" { scriptMenuResponse "collision"; close me_cmd }
+	
+		itemDef
+		{
+			name			"window"
+			group			ingamebox
+			type			ITEM_TYPE_TEXT
+			visible			1
+			rect			16 84 0 0
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			forecolor		1 1 1 1
+			textfont		UI_FONT_NORMAL
+			textscale		.24
+			textaligny		8
+			text			"^35. ^1Remove ^7Last Spawned Model (Disabled Until 0.8)"
+			decoration
+		}
+		execKey "5" { scriptMenuResponse "remove"; close me_cmd }
+	
+		itemDef
+		{
+			name			"window"
+			group			ingamebox
+			type			ITEM_TYPE_TEXT
+			visible			1
+			rect			16 100 0 0
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			forecolor		1 1 1 1
+			textfont		UI_FONT_NORMAL
+			textscale		.24
+			textaligny		8
+			text			"^36. ^1Remove All ^7Spawned Models (Disabled Until 0.8)"
+			decoration
+		}
+		execKey "6" { scriptMenuResponse "removeall"; close me_cmd }
+
+		itemDef
+		{
+			name			"window"
+			group			ingamebox
+			type			ITEM_TYPE_TEXT
+			visible			1
+			rect			16 116 0 0
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			forecolor		1 1 1 1
+			textfont		UI_FONT_NORMAL
+			textscale		.24
+			textaligny		8
+			text			"^37. ^2Save ^7Map (Disabled Until 0.8"
+			decoration
+		}
+		execKey "7" { scriptMenuResponse "save"; close me_cmd }
+	
+		itemDef
+		{
+			name			"window"
+			group			ingamebox
+			type			ITEM_TYPE_TEXT
+			visible			1
+			rect			16 132 0 0
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			forecolor		1 1 1 1
+			textfont		UI_FONT_NORMAL
+			textscale		.24
+			textaligny		8
+			text			"^38. ^7Controls"
+			decoration
+		}
+		execKey "8" { scriptMenuResponse "controls"; close me_cmd }
+	
+		itemDef
+		{
+			name			"window"
+			type			ITEM_TYPE_TEXT
+			visible			1
+			rect			16 148 0 0
+			origin			ORIGIN_QUICKMESSAGEWINDOW
+			forecolor		1 1 1 1
+			textfont		UI_FONT_NORMAL
+			textscale		.24
+			textaligny		8
+			text			"^3Press ^1ESC ^3to exit this menu"
+			decoration
+		}
+	}
+}

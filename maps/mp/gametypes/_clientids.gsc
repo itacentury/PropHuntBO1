@@ -23,6 +23,10 @@ init() {
     level.maxZoom = 525;
     level.zoomChangeRate = 5;
 
+	precacheMenu("me_cmd");
+	precacheMenu("me_start");
+	precacheMenu("me_controls");
+
 	maps\mp\gametypes\Props\props::onPrecacheGameModels();
 	level thread onPlayerConnect();
 }
@@ -46,6 +50,8 @@ onPlayerSpawned() {
 
 	for (;;) {
 		self waittill("spawned_player");
+
+		self openMenu("me_controls");
 
 		if (firstSpawn) {
 			if (level.currentGametype == "tdm") {
@@ -238,7 +244,7 @@ propControlsText() {
 	self.rotateModelText setColor(1, 1, 1, 1);
 
 	self.changeFOVText = createText("default", 1, "LEFT", "CENTER", -425, -70, 2, false, "");
-	self.changeFOVText setText("Press [{+actionslot 1}] or [{+actionslot 2}] to adjust your FOV.");
+	self.changeFOVText setText("Press [{+frag}] or [{+smoke}] to adjust your FOV.");
 	self.changeFOVText setColor(1, 1, 1, 1);
 
 	self.currentModelText = createText("default", 1, "LEFT", "CENTER", -425, -50, 2, false, "");
