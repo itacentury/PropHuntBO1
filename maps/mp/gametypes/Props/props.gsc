@@ -186,23 +186,8 @@ monitorKeyPress() {
     level endon("game_ended");
 
     usableModelsKeys = getArrayKeys(level.usableModels);
-    minZoom = 125;
-    maxZoom = 525;
-    zoomChangeRate = 5;
-    self Hide();
-    self.pers["myprop"].rotateYaw_attack = spawnStruct();
-    self.pers["myprop"].rotateYaw_attack.value = 0;
-    self.pers["myprop"].rotateYaw_attack.check = ::attackCheck;
-    self.pers["myprop"].rotateYaw_attack.max = -50;
-    self.pers["myprop"].rotateYaw_attack.change_rate = 1;
-    self.pers["myprop"].rotateYaw_attack.reset_rate = 50;
-    self.pers["myprop"].rotateYaw_ads = spawnStruct();
-    self.pers["myprop"].rotateYaw_ads.value = 0;
-    self.pers["myprop"].rotateYaw_ads.check = ::adsCheck;
-    self.pers["myprop"].rotateYaw_ads.max = 50;
-    self.pers["myprop"].rotateYaw_ads.change_rate = 1;
-    self.pers["myprop"].rotateYaw_ads.reset_rate = 50;
-    self.pers["myprop"].angles = self.angles;
+    self.pers["myProp"].angles = self.angles;
+    self.thirdPersonRange = getDvarInt("cg_thirdPersonRange");
 
     for (;;) {
         if (self actionslotThreeButtonPressed() && isDefined(self.pers["myProp"])) {
@@ -235,63 +220,36 @@ monitorKeyPress() {
 			}
         }
 
-        if (self actionSlotOneButtonPressed()) {
-            if (getDvarInt("cg_thirdPersonRange") > level.minZoom) {
-                self setClientDvar("cg_thirdPersonRange", getDvarInt("cg_thirdPersonRange") - level.zoomChangeRate);
+        while (self adsButtonPressed()) {
+            self.pers["myProp"] rotateYaw(-1, 0.01);
+            wait 0.01;
+        }
+
+        while (self attackButtonPressed()) {
+            self.pers["myProp"] rotateYaw(1, 0.01);
+            wait 0.01;
+        }
+
+        while (self fragButtonPressed()) {
+            self.thirdPersonRange -= level.zoomChangeRate;
+            if (self.thirdPersonRange < level.minZoom) {
+                self.thirdPersonRange = level.minZoom;
             }
+
+            self setClientDvar("cg_thirdPersonRange", self.thirdPersonRange);
+            wait 0.01;
         }
 
-        if (self actionSlotTwoButtonPressed()) {
-            if (getDvarInt("cg_thirdPersonRange" ) < level.maxZoom) {
-                self setClientDvar("cg_thirdPersonRange", getDvarInt("cg_thirdPersonRange") + level.zoomChangeRate);
+        while (self secondaryOffhandButtonPressed()) {
+            self.thirdPersonRange += level.zoomChangeRate;
+            if (self.thirdPersonRange > level.maxZoom) {
+                self.thirdPersonRange = level.maxZoom;
             }
+
+            self setClientDvar("cg_thirdPersonRange", self.thirdPersonRange);
+            wait 0.01;
         }
 
-        self buttonHeldCheck(self.pers["myProp"].rotateYaw_attack);
-        self buttonHeldCheck(self.pers["myProp"].rotateYaw_ads);
-        self.pers["myProp"] rotateYaw(self.pers["myProp"].rotateYaw_ads.value + self.pers["myProp"].rotateYaw_attack.value, 0.5);
-        
-        wait .05;
+        wait 0.05;
     }
-}
-
-buttonHeldCheck(struct) {
-    self endon("disconnect");
-    self endon("death");
-
-	if ([[struct.check]]()) {
-        if (struct.max > 0) {
-            struct.value += struct.change_rate;
-        } else {
-            struct.value -= struct.change_rate;
-        }
-    } else if (struct.value != 0) {
-        if (struct.value > 0) {
-            struct.value -= struct.reset_rate;
-        } else {
-            struct.value += struct.reset_rate;
-        }
-
-        if (abs(struct.value) < struct.reset_rate) {
-            struct.value = 0;
-        }
-    }
-
-    if (struct.max > 0) {
-        if (struct.value > struct.max) {
-            struct.value = struct.max;
-        }
-    } else {
-        if (struct.value < struct.max) {
-            struct.value = struct.max;
-        }
-    }
-}
-
-adsCheck() {
-    return self adsButtonPressed();
-}
-
-attackCheck() {
-    return self attackButtonPressed();
 }
