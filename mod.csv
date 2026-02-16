@@ -1,6 +1,3 @@
-menufile,ui_mp/scriptmenus/me_cmd.menu
-menufile,ui_mp/scriptmenus/me_controls.menu
-menufile,ui_mp/scriptmenus/me_start.menu
 rawfile,maps/mp/gametypes/_clientids.gsc
 rawfile,maps/mp/gametypes/tdm.gsc
 rawfile,maps/mp/gametypes/props/assets.gsc
