@@ -21,11 +21,7 @@ init() {
 
 	level.minZoom = 125;
     level.maxZoom = 525;
-    level.zoomChangeRate = 5;
-
-	precacheMenu("me_cmd");
-	precacheMenu("me_start");
-	precacheMenu("me_controls");
+    level.zoomChangeRate = 3;
 
 	maps\mp\gametypes\Props\props::onPrecacheGameModels();
 	level thread onPlayerConnect();
@@ -50,8 +46,6 @@ onPlayerSpawned() {
 
 	for (;;) {
 		self waittill("spawned_player");
-
-		self openMenu("me_controls");
 
 		if (firstSpawn) {
 			if (level.currentGametype == "tdm") {
