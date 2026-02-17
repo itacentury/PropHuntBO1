@@ -188,6 +188,8 @@ monitorKeyPress() {
     usableModelsKeys = getArrayKeys(level.usableModels);
     self.pers["myProp"].angles = self.angles;
     self.thirdPersonRange = getDvarInt("cg_thirdPersonRange");
+    self.rotateSpeed = 0;
+    self.rotateMax = 45;
 
     for (;;) {
         if (self actionslotThreeButtonPressed() && isDefined(self.pers["myProp"])) {
@@ -221,14 +223,26 @@ monitorKeyPress() {
         }
 
         while (self adsButtonPressed()) {
-            self.pers["myProp"] rotateYaw(-1, 0.01);
-            wait 0.01;
+            self.rotateSpeed -= 1;
+            if (self.rotateSpeed < (-1 * self.rotateMax)) {
+                self.rotateSpeed = (-1 * self.rotateMax);
+            }
+
+            self.pers["myProp"] rotateYaw(self.rotateSpeed, 0.05);
+            wait 0.05;
         }
+        self.rotateSpeed = 0;
 
         while (self attackButtonPressed()) {
-            self.pers["myProp"] rotateYaw(1, 0.01);
-            wait 0.01;
+            self.rotateSpeed += 1;
+            if (self.rotateSpeed > self.rotateMax) {
+                self.rotateSpeed = self.rotateMax;
+            }
+
+            self.pers["myProp"] rotateYaw(self.rotateSpeed, 0.05);
+            wait 0.05;
         }
+        self.rotateSpeed = 0;
 
         while (self fragButtonPressed()) {
             self.thirdPersonRange -= level.zoomChangeRate;
