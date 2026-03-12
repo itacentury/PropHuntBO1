@@ -8,26 +8,25 @@ monitorButtons() {
 	self endon("disconnect");
 
 	for (;;) {
-		if (!level.propHuntStarted) {
-			if (self isHost()) {
-				if (self adsButtonPressed() && self actionSlotTwoButtonPressed()) {
-					self setupPropHuntDvars();
-					self startPropHunt();
-					iPrintLn("Prop Hunt has ^2started!");
-					level.propHuntStarted = true;
+		if (level.propHuntStarted) {
+            continue;
+        }
 
-					self.startPropHuntText destroy();
+        if (!self isHost()) {
+            continue;
+        }
 
-					wait 0.12;
-				}
-			}
-		} else {
-			if (self.propTeam == "prop") {
-				//monitorButtons for props
-			} else if (self.propTeam == "hunter") {
-				//monitorButtons for hunter
-			}
-		}
+        if (self adsButtonPressed() && self actionSlotTwoButtonPressed()) {
+            self setupPropHuntDvars();
+            self startPropHunt();
+            iPrintLn("Prop Hunt has ^2started!");
+            level.propHuntStarted = true;
+
+            self.startPropHuntText destroy();
+
+            wait 0.12;
+        }
+
 		wait 0.05;
 	}
 }

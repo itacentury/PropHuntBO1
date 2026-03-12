@@ -4,7 +4,6 @@
 
 #include maps\mp\gametypes\prophunt\ui;
 #include maps\mp\gametypes\prophunt\utils;
-#include maps\mp\gametypes\prophunt\controls;
 
 propLogic() {
 	self iPrintLnBold("You are a Prop! Choose your model and find a hiding spot!");
@@ -44,7 +43,8 @@ propLogic() {
 	//No visible nametag
 	self setPerk("specialty_noname");
 
-    self thread monitorPropButtons();
+    self thread maps\mp\gametypes\prophunt\controls::monitorPropButtons();
+	self thread resetOnDeath();
 }
 
 resetOnDeath() {
@@ -64,6 +64,5 @@ resetOnDeath() {
 	self.changeFOVText destroy();
 	self.currentModelText destroy();
 
-	//delete text
-	//set spectator
+	//TODO: respawn as hunter
 }

@@ -73,27 +73,27 @@ startPropHunt() {
 
 onPrecacheGameModels() {
     precacheLevelModels();
-    if (isDefined(level.availableModels) && level.availableModels.size > 0 ) {
-        level.availableModels = array_randomize(level.availableModels);
-        if (level.availableModels.size < level.MAX_USABLE_MODELS) {
-            level.MAX_USABLE_MODELS = level.availableModels.size;
-        }
 
-        availableModelsKeys = getArrayKeys(level.availableModels);
-        if (!isDefined(level.usableModels)) {
-            level.usableModels = [];
-        }
-
-        for (x = 0; x < level.availableModels.size; x++) {
-            precacheModel(level.availableModels[availableModelsKeys[x]]);
-            level.usableModels[level.availableModels[availableModelsKeys[x]]] = level.availableModels[availableModelsKeys[x]];
-            if (level.usableModels.size >= level.MAX_USABLE_MODELS) {
-                return;
-            }
-        }
+    if (!isDefined(level.availableModels) || level.availableModels.size <= 0 ) {
+        return;
     }
-	else {
-		self iPrintLn("Error: Failed to load models. No models have been assigned.");
+
+    level.availableModels = array_randomize(level.availableModels);
+    if (level.availableModels.size < level.MAX_USABLE_MODELS) {
+        level.MAX_USABLE_MODELS = level.availableModels.size;
+    }
+
+    availableModelsKeys = getArrayKeys(level.availableModels);
+    if (!isDefined(level.usableModels)) {
+        level.usableModels = [];
+    }
+
+    for (i = 0; i < level.availableModels.size; i++) {
+        precacheModel(level.availableModels[availableModelsKeys[i]]);
+        level.usableModels[level.availableModels[availableModelsKeys[i]]] = level.availableModels[availableModelsKeys[i]];
+        if (level.usableModels.size >= level.MAX_USABLE_MODELS) {
+            return;
+        }
     }
 }
 
