@@ -4,6 +4,7 @@
 
 #include maps\mp\gametypes\prophunt\ui;
 #include maps\mp\gametypes\prophunt\utils;
+#include maps\mp\gametypes\prophunt\setup;
 #include maps\mp\gametypes\prophunt\controls;
 
 /*
@@ -20,7 +21,10 @@ Players who join the game after prophunt already started are frozen, given an in
 
 main() {
 	level.currentGametype = getDvar("g_gametype");
+	level.originalScoreLimit = GetDvarInt("scr_tdm_scorelimit");
+	
 	level.propHuntStarted = false;
+	level.prophuntDvarsReset = false;
 
 	level.minZoom = 125;
     level.maxZoom = 525;
@@ -33,6 +37,8 @@ main() {
 onPlayerConnect() {
 	for (;;) {
 		level waittill("connecting", player);
+
+		resetPropHuntDvars();
 
 		player.propTeam = undefined; //"Prop" "Hunter" "Spectator"
 

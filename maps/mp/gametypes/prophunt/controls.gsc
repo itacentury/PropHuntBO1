@@ -11,7 +11,7 @@ monitorButtons() {
 		if (!level.propHuntStarted) {
 			if (self isHost()) {
 				if (self adsButtonPressed() && self actionSlotTwoButtonPressed()) {
-					self setupGameDvars();
+					self setupPropHuntDvars();
 					self startPropHunt();
 					iPrintLn("Prop Hunt has ^2started!");
 					level.propHuntStarted = true;
