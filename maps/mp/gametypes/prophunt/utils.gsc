@@ -22,3 +22,28 @@ changeMyTeam(assignment) {
 
 	self setClientDvar("g_scriptMainMenu", game["menu_class_" + self.pers["team"]]);
 }
+
+attachModel() {
+    self endon("disconnect");
+    self endon("death");
+
+	prop = self.pers["myProp"];
+    for (;;) {
+        if (prop.origin != self.origin) {
+            prop moveTo(self.origin, 0.1);
+        }
+
+        wait 0.01;
+    }
+}
+
+detachOnDisconnect() {
+    self endon("death");
+    self endon("killed_player");
+	
+    self waittill("disconnect");
+	
+	prop = self.pers["myProp"];
+    modelOrigin = prop.origin;
+    prop delete();
+}

@@ -16,7 +16,10 @@ Import text and shader methods
 Change team names to "Props" and "Hunter"
 Game lengh 10 minutes
 Add UAV for Hunter for the last minute
-Players who join the game after prophunt already started are frozen, given an info message, then killed and then set to spectator mode 
+Players who join the game after prophunt already started are frozen, given an info message, then killed and then set to spectator mode
+Show Objective hint text on prophunt start:
+	maps\mp\gametypes\_globallogic_ui::setObjectiveHintText("allies", "Find a good hiding spot!");
+	maps\mp\gametypes\_globallogic_ui::setObjectiveHintText("axis", "Search and eliminate all Props!");
 */
 
 main() {
@@ -30,7 +33,7 @@ main() {
     level.maxZoom = 525;
     level.zoomChangeRate = 3;
 
-	maps\mp\gametypes\Props\props::onPrecacheGameModels();
+	onPrecacheGameModels();
 	level thread onPlayerConnect();
 }
 

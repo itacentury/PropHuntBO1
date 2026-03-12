@@ -11,7 +11,7 @@
 The MapEditor Project
 Created by JariZ & Scripts18
 Based on SparkyMcSparks' HideNSeek
-Ported by CenTurY
+Ported by Century
 (c) JariZ.nl 2011
 This a open-source project. for more information see LICENSE.TXT
 */
