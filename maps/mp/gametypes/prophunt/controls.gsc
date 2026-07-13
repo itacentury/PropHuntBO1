@@ -2,10 +2,12 @@
 #include common_scripts\utility;
 #include maps\mp\gametypes\_hud_util;
 
+#include maps\mp\gametypes\prophunt\ui;
 #include maps\mp\gametypes\prophunt\setup;
 
 monitorButtons() {
 	self endon("disconnect");
+    self endon("exit_prophunt");
 
 	for (;;) {
 		if (level.propHuntStarted) {
@@ -21,9 +23,12 @@ monitorButtons() {
             self startPropHunt();
             iPrintLn("Prop Hunt has ^2started!");
             level.propHuntStarted = true;
-
-            self.startPropHuntText destroy();
-
+            self destroyPropHuntWelcomeText();
+            wait 0.12;
+        } else if (self meleeButtonPressed()) {
+            level.propHuntStarted = false;
+            self destroyPropHuntWelcomeText();
+            self notify("exit_prophunt");
             wait 0.12;
         }
 

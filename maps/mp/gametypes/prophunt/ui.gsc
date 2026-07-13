@@ -2,10 +2,19 @@
 #include common_scripts\utility;
 #include maps\mp\gametypes\_hud_util;
 
-startPropHuntText() {
+showPropHuntWelcomeText() {
 	self.startPropHuntText = createText("default", 1.5, "CENTER", "CENTER", 0, -50, 2, false, "");
 	self.startPropHuntText setText("Press [{+speed_throw}] + [{+actionslot 2}] to start Prop Hunt!");
 	self.startPropHuntText setColor(1, 1, 1, 1);
+
+	self.exitPropHuntText = createText("default", 1.5, "CENTER", "CENTER", 0, -35, 2, false, "");
+	self.exitPropHuntText setText("Press [{+melee}] to play normally.");
+	self.exitPropHuntText setColor(1, 1, 1, 1);
+}
+
+destroyPropHuntWelcomeText() {
+    self.startPropHuntText destroy();
+    self.exitPropHuntText destroy();
 }
 
 propControlsText() {

@@ -64,7 +64,7 @@ onPlayerSpawned() {
 
 				if (self isHost()) {
 					if (!level.propHuntStarted) {
-						self startPropHuntText();
+						self showPropHuntWelcomeText();
 					}
 				} else {
 					//if player joins the game and prophunt already started, he becomes a spectator until the next game
