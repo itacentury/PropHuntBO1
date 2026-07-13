@@ -50,33 +50,27 @@ monitorPropButtons() {
 
     for (;;) {
         if (self actionslotThreeButtonPressed() && isDefined(self.pers["myProp"])) {
-            if (self.pers["mode"] == "normal") {
-				self.pers["myProp"].indexKey = self.pers["myProp"].indexKey + 1;
-				printLn("HNS INDEX: " + self.pers["myProp"].indexKey + "   MAX POS: " + level.MAX_USABLE_MODELS);
-				if (self.pers["myProp"].indexKey >= level.MAX_USABLE_MODELS || self.pers["myProp"].indexKey < 0) {
-					self.pers["myProp"].indexKey = 0;
-				}
+            self.pers["myProp"].indexKey += 1;
+            if (self.pers["myProp"].indexKey >= level.MAX_USABLE_MODELS) {
+                self.pers["myProp"].indexKey = 0;
+            }
 
-                model = level.usableModels[usableModelsKeys[self.pers["myProp"].indexKey]];
-                self.currentModelText setText("Current model: " + model);
-				self.pers["myProp"] setModel(model);
-				self.pers["myProp"] notSolid();
-			}
+            model = level.usableModels[usableModelsKeys[self.pers["myProp"].indexKey]];
+            self.currentModelText setText("Current model: " + model);
+            self.pers["myProp"] setModel(model);
+            self.pers["myProp"] notSolid();
         }
 
         if (self actionSlotFourButtonPressed() && isDefined(self.pers["myProp"])) {
-			if (self.pers["mode"] == "normal") {
-				self.pers["myProp"].indexKey = self.pers["myProp"].indexKey - 1;
-				printLn("HNS INDEX: " + self.pers["myProp"].indexKey + "   MAX POS: " + level.MAX_USABLE_MODELS);
-				if (self.pers["myProp"].indexKey >= level.MAX_USABLE_MODELS || self.pers["myProp"].indexKey < 0) {
-					self.pers["myProp"].indexKey = 0;
-				}
+            self.pers["myProp"].indexKey -= 1;
+            if (self.pers["myProp"].indexKey < 0) {
+                self.pers["myProp"].indexKey = level.MAX_USABLE_MODELS - 1;
+            }
 
-                model = level.usableModels[usableModelsKeys[self.pers["myProp"].indexKey]];
-                self.currentModelText setText("Current model: " + model);
-				self.pers["myProp"] setModel(model);
-				self.pers["myProp"] notSolid();
-			}
+            model = level.usableModels[usableModelsKeys[self.pers["myProp"].indexKey]];
+            self.currentModelText setText("Current model: " + model);
+            self.pers["myProp"] setModel(model);
+            self.pers["myProp"] notSolid();
         }
 
         while (self adsButtonPressed()) {
